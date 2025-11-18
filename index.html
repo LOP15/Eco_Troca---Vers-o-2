@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Troca Verde Tech - Startup Sustentável</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, rgba(27,94,32,0.1), rgba(46,125,50,0.05)),
+                        url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2d8659, #4CAF50);
+            color: white;
+            padding: 0.9rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before { content: "♻️"; font-size: 1.8rem; }
+
+        /* Desktop links */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        nav a:hover { color: #81C784; }
+
+        /* HAMBURGER (transforma em X) */
+        .menu-toggle {
+            display: none; 
+            width: 40px;
+            height: 36px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle .bar {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            position: relative;
+            transition: transform 0.35s ease, opacity 0.2s ease;
+        }
+        .menu-toggle .bar::before,
+        .menu-toggle .bar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 22px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: transform 0.35s ease, opacity 0.2s ease;
+        }
+        .menu-toggle .bar::before { top: -7px; }
+        .menu-toggle .bar::after { top: 7px; }
+
+        /* quando ativo, vira X */
+        .menu-toggle.active .bar { transform: rotate(45deg); }
+        .menu-toggle.active .bar::before { transform: rotate(90deg) translateX(0); top: 0; opacity: 0; }
+        .menu-toggle.active .bar::after { transform: rotate(90deg) translateX(0); top: 0; opacity: 0; }
+
+        /* Mobile menu (aparece quando nav.nav-open) */
+        nav.mobile-open ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            position: absolute;
+            right: 1rem;
+            top: 56px;
+            background: linear-gradient(135deg, rgba(45,134,89,0.95), rgba(76,175,80,0.95));
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            z-index: 1500;
+        }
+
+        nav.mobile-open ul a { color: white; padding: 0.5rem 0.75rem; display: block; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(27,94,32,0.4), rgba(46,125,50,0.3), rgba(76,175,80,0.2));
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 2rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute; inset:0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0.8;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .hero-text p { font-size: 1.1rem; margin-bottom: 1.5rem; opacity: 0.95; animation: slideInLeft 1s ease-out 0.25s both; }
+
+        .cta-button { 
+            background: linear-gradient(45deg, #FF6B35, #F7931E); 
+            color: white; 
+            padding: 0.95rem 1.75rem; 
+            border: none; 
+            border-radius: 50px; 
+            font-size: 1.02rem; 
+            cursor: pointer; 
+            display: inline-flex; 
+            gap: .5rem; 
+            transition: all .25s ease; 
+            text-decoration: none; /* Adicionado para o novo CTA */
+        }
+        .cta-button:hover { 
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .hero-visual { display: flex; justify-content: center; align-items: center; animation: slideInRight 1s ease-out; }
+
+        /* Floating icons grid (desktop 3 col) */
+        .floating-icons { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; animation: float 6s ease-in-out infinite; width:100%; }
+        .icon-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 1.6rem; border-radius: 18px; text-align: center; border: 1px solid rgba(255,255,255,0.12); transition: transform .25s ease; min-width:120px; }
+        .icon-card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.14); }
+        .icon-card .icon { font-size: 2.6rem; margin-bottom: 0.6rem; display:block; }
+
+        /* Sections */
+        section { padding: 3.5rem 1.25rem; max-width:1200px; margin: 0 auto 1.5rem auto; background: rgba(255,255,255,0.95); border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.18); }
+        section#home.hero { background: transparent; box-shadow: none; backdrop-filter: none; border: none; margin:0; max-width:100%; border-radius:0; }
+
+        .section-title { text-align:center; margin-bottom:1.75rem; }
+        .section-title h2 { font-size:2.6rem; color:#2E7D32; position:relative; margin-bottom:.5rem; }
+        .section-title h2::after { content:''; position:absolute; bottom:-.5rem; left:50%; transform:translateX(-50%); width:90px; height:4px; background: linear-gradient(45deg,#4CAF50,#81C784); border-radius:2px; }
+
+        .about-content { display:grid; grid-template-columns: 1fr 1fr; gap: 2.25rem; align-items:center; }
+        .about-text { font-size:1.04rem; line-height:1.7; }
+        .about-stats { display:grid; grid-template-columns: repeat(2,1fr); gap:1rem; }
+        .stat-card { text-align:center; padding:1.25rem; background: linear-gradient(135deg,#E8F5E8,#F1F8E9); border-radius:12px; }
+        .stat-number { font-size:2rem; font-weight:700; color:#2E7D32; display:block; }
+
+        .objectives-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:1rem; margin-top:1rem; }
+        .objective-card { background:white; padding:1rem; border-radius:12px; box-shadow: 0 5px 20px rgba(0,0,0,0.06); border-left: 5px solid #4CAF50; }
+
+        .team-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap:1rem; margin-top:1rem; }
+        .team-card { background:white; padding:1rem; border-radius:12px; text-align:center; box-shadow: 0 5px 20px rgba(0,0,0,0.06); }
+        .avatar { width:64px; height:64px; border-radius:50%; background: linear-gradient(135deg,#4CAF50,#81C784); margin:0 auto 0.6rem; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; }
+
+        .contact { background: rgba(255,255,255,0.95) !important; padding:2.5rem 1rem; border-radius:12px; }
+        .contact-info { display:flex; justify-content:center; gap:1.25rem; flex-wrap:wrap; margin-top:1rem; }
+        .contact-item { display:flex; gap:.5rem; align-items:center; color:#2E7D32; }
+
+        /* Animations */
+        @keyframes slideInLeft { from{opacity:0; transform:translateX(-40px)} to{opacity:1; transform:translateX(0)} }
+        @keyframes slideInRight{ from{opacity:0; transform:translateX(40px)} to{opacity:1; transform:translateX(0)} }
+        @keyframes float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .menu-toggle { display:flex; align-items:center; justify-content:center; background:transparent; border:none; }
+            nav ul { display:none; } 
+            .hero { padding: 5.5rem 0.75rem 2.5rem; }
+            .hero-content { grid-template-columns:1fr; text-align:center; gap:1.25rem; padding:0 1rem; }
+            .hero-text h1 { font-size:2rem; }
+            .hero-text p { font-size:1rem; }
+            .floating-icons { grid-template-columns: repeat(2,1fr); gap: .9rem; }
+            .icon-card { padding: 1rem; }
+            .icon-card .icon { font-size:1.9rem; }
+            section { padding:2rem 1rem; margin: .75rem; }
+            .section-title h2 { font-size:1.8rem; }
+            .about-content { grid-template-columns:1fr; }
+            .about-stats { grid-template-columns:1fr; }
+            .objectives-grid { grid-template-columns:1fr; }
+            .team-grid { grid-template-columns:1fr; }
+            .contact-info { flex-direction:column; align-items:flex-start; gap:.6rem; }
+            footer { padding:1.2rem 1rem; margin:1rem; font-size:0.9rem; }
+            nav.mobile-open ul { display:flex; }
+            nav.mobile-open ul { right: 0.75rem; top: 52px; }
+        }
+
+        @media (max-width:480px) {
+            .hero-text h1 { font-size:1.6rem; }
+            .section-title h2 { font-size:1.4rem; }
+            .floating-icons { grid-template-columns: repeat(2,1fr); gap:.6rem; }
+        }
+
+        html { scroll-behavior: smooth; }
+        footer { background: rgba(27,94,32,0.95); color:white; text-align:center; padding:1.5rem; margin:1rem auto 0; max-width:1200px; border-radius:12px; backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.08); }
+        header + section { padding-top: 5.2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav id="mainNav">
+            <div class="logo">Eco Troca Verde Tech</div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                <span class="bar" aria-hidden="true"></span>
+            </button>
+
+            <ul>
+                <li><a href="#home">Início</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#objectives">Objetivos</a></li>
+                <li><a href="#team">Equipe</a></li>
+                <li><a href="plataforma.html" style="font-weight: bold; color: #FFEB3B;">Dashboard/Plataforma 🚀</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Eco Troca Verde Tech</h1>
+                <p>Startup de impacto socioambiental e tecnológico que integra soluções digitais e presenciais para promover gestão inteligente de resíduos sólidos, educação ambiental e inclusão financeira sustentável na comunidade São Remo.</p>
+                <a href="plataforma.html" class="cta-button">Acessar a Plataforma →</a>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-icons">
+                    <div class="icon-card"><span class="icon">♻️</span><p>Reciclagem</p></div>
+                    <div class="icon-card"><span class="icon">💳</span><p>Inclusão Financeira</p></div>
+                    <div class="icon-card"><span class="icon">📱</span><p>Tecnologia</p></div>
+                    <div class="icon-card"><span class="icon">🌱</span><p>Sustentável</p></div>
+                    <div class="icon-card"><span class="icon">👥</span><p>Comunidade</p></div>
+                    <div class="icon-card"><span class="icon">🎮</span><p>Gamificação</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-title"><h2>Sobre o Projeto</h2><p>Uma iniciativa sustentável que nasce do coração da comunidade São Remo</p></div>
+        <div class="about-content">
+            <div class="about-text">
+                <p>A <strong>Eco Troca Verde Tech</strong> nasceu na comunidade São Remo, localizada na zona oeste de São Paulo, com o propósito de transformar o descarte irregular de resíduos sólidos urbanos em uma oportunidade de inovação social, geração de renda e desenvolvimento local.</p>
+                <p>Utilizamos tecnologia, gamificação e microfinanças verdes para engajar os moradores na separação correta dos resíduos, recompensando suas ações com créditos digitais que podem ser convertidos em produtos, PIX, cartas de crédito ou até microempréstimos com juros reduzidos.</p>
+                <p>Nosso modelo de economia circular comunitária estimula hábitos sustentáveis, educação ambiental e inclusão financeira, com expansão gradual para bairros vizinhos, fortalecendo a rede de coleta e conscientização regional.</p>
+            </div>
+            <div class="about-stats">
+                <div class="stat-card"><span class="stat-number">1ª</span><p>Comunidade piloto: São Remo</p></div>
+                <div class="stat-card"><span class="stat-number">3</span><p>Pilares: Tecnologia, Educação e Inclusão</p></div>
+                <div class="stat-card"><span class="stat-number">1</span><p>Solução integrada e inovadora</p></div>
+                <div class="stat-card"><span class="stat-number">100%</span><p>Comprometimento com a comunidade</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="objectives">
+        <div class="section-title"><h2>Nossos Objetivos</h2><p>Metas claras para transformação social e ambiental</p></div>
+        <div class="objectives-grid">
+            <div class="objective-card"><span class="icon">🎓</span><h3>Educação Ambiental</h3><p>Conscientizar os moradores sobre a importância da reciclagem e a correta separação dos resíduos sólidos urbanos.</p></div>
+            <div class="objective-card"><span class="icon">💳</span><h3>Inclusão Financeira</h3><p>Promover acesso a créditos digitais, PIX, cartas de crédito e microempréstimos com juros reduzidos através da reciclagem.</p></div>
+            <div class="objective-card"><span class="icon">🎮</span><h3>Gamificação e Tecnologia</h3><p>Utilizar plataforma digital com sistema de pontuação e recompensas para engajar e motivar a participação ativa.</p></div>
+            <div class="objective-card"><span class="icon">🔄</span><h3>Economia Circular</h3><p>Consolidar um modelo de economia circular comunitária que gere renda e desenvolvimento local sustentável.</p></div>
+            <div class="objective-card"><span class="icon">🤝</span><h3>Parcerias Estratégicas</h3><p>Desenvolver colaborações com estabelecimentos comerciais, cooperativas e órgãos públicos para fortalecer a rede.</p></div>
+            <div class="objective-card"><span class="icon">🌍</span><h3>Expansão Regional</h3><p>Implementar na São Remo com expansão gradual para bairros vizinhos, fortalecendo a conscientização regional.</p></div>
+        </div>
+    </section>
+
+    <section id="team">
+        <div class="section-title"><h2>Nossa Equipe</h2><p>Profissionais dedicados à transformação social e ambiental</p></div>
+        <div class="team-grid">
+            <div class="team-card"><div class="avatar">AK</div><h3>Alexey Kanashiro Andrade</h3><p>Idealizador e Coordenador Geral</p><small>Responsável pela visão estratégica e coordenação do projeto</small></div>
+            <div class="team-card"><div class="avatar">AR</div><h3>Arthur Paes Teodoro dos Reis Brito</h3><p>Sistemas e Gamificação</p><small>Desenvolvimento do sistema de recompensas e estratégias de engajamento</small></div>
+            <div class="team-card"><div class="avatar">OM</div><h3>Olavo Marcos da Silva Junior</h3><p>Pesquisa e Comunidade</p><small>Pesquisa de campo, contato comunitário e análise de dados</small></div>
+            <div class="team-card"><div class="avatar">LH</div><h3>Lucas Henrique de Oliveira Assis</h3><p>Comunicação e Parcerias</p><small>Plano de comunicação, marketing local e desenvolvimento de parcerias</small></div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="contact-content">
+            <div class="section-title"><h2 style="color:#2E7D32;">Fale Conosco</h2><p>Interessado em conhecer mais sobre o projeto ou formar parcerias?</p></div>
+            <div class="contact-info">
+                <div class="contact-item"><span>📍</span><span>Comunidade São Remo - Butantã - Zona Oeste - São Paulo, SP</span></div>
+                <div class="contact-item"><span>📧</span><span>alexey.andrade@gmail.com</span></div>
+                <div class="contact-item"><span>📱</span><span>(17) 98146-6059</span></div>
+            </div>
+            <button class="cta-button" style="margin-top:1rem;">Entrar em Contato ✉️</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Eco Troca Verde Tech - Startup de Impacto Socioambiental e Tecnológico</p>
+        <p>Transformando a comunidade São Remo através da sustentabilidade e inclusão financeira</p>
+    </footer>
+
+    <script>
+        // Smooth scroll para os links de navegação internos
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // fecha menu mobile se estiver aberto
+                const nav = document.getElementById('mainNav');
+                if (nav.classList.contains('mobile-open')) {
+                    nav.classList.remove('mobile-open');
+                    document.getElementById('menuToggle').classList.remove('active');
+                }
+            });
+        });
+
+        // CTA button actions
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.textContent.includes('Entrar em Contato')) {
+                    alert('Funcionalidade de contato será implementada em breve!');
+                }
+                // O CTA da HOME agora é um link direto, então não precisa de JS
+            });
+        });
+
+        // Intersection observer para animação de cards
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.objective-card, .team-card, .stat-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // header transparente ao scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) header.style.background = 'linear-gradient(135deg, rgba(45,134,89,0.95), rgba(76,175,80,0.95))';
+            else header.style.background = 'linear-gradient(135deg,#2d8659,#4CAF50)';
+        });
+
+        // menu hambúrguer que vira X
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuToggle.classList.toggle('active');
+            mainNav.classList.toggle('mobile-open');
+        });
+
+        // fecha o menu se clicar fora
+        document.addEventListener('click', (e) => {
+            if (!mainNav.contains(e.target) && mainNav.classList.contains('mobile-open')) {
+                mainNav.classList.remove('mobile-open');
+                menuToggle.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
