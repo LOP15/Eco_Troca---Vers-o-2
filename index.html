@@ -51,19 +51,15 @@
         }
 
         .logo {
+            /* Nome atualizado */
             font-size: 1.4rem;
             font-weight: bold;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            /* Estilo para o logo de imagem */
         }
 
-        .logo img {
-            height: 40px; /* Ajuste a altura conforme necessário */
-            width: auto;
-            vertical-align: middle;
-        }
+        .logo::before { content: "♻️"; font-size: 1.8rem; }
 
         /* Desktop links */
         nav ul {
@@ -258,10 +254,6 @@
             footer { padding:1.2rem 1rem; margin:1rem; font-size:0.9rem; }
             nav.mobile-open ul { display:flex; }
             nav.mobile-open ul { right: 0.75rem; top: 52px; }
-
-            .logo img {
-                height: 35px; /* Ajuste para mobile */
-            }
         }
 
         @media (max-width:480px) {
@@ -278,8 +270,7 @@
 <body>
     <header>
         <nav id="mainNav">
-            <div class="logo">
-                <img src="images/logo_ecotroca.png" alt="Eco Troca Logo"> </div>
+            <div class="logo">Eco Troca</div>
 
             <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
                 <span class="bar" aria-hidden="true"></span>
